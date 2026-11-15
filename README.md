@@ -1,75 +1,20 @@
-# React + TypeScript + Vite
+# Employee Scheduler
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React and TypeScript app for planning one recurring workweek.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```sh
+npm ci
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Open the URL printed by Vite. Use `npm run build` to type-check and build the production app.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Employees** lets you add, edit, and remove staff and set their availability and limits.
+- Pick a day and use **Add shift** or click an empty hour on a workstation row. Click an existing shift to change or remove it.
+- **Generate schedule** assigns staff across the whole week. Changes to employees or shifts clear the old assignments so that the displayed result cannot refer to stale data. Edits and generated schedules are saved in the current browser.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Each shift covers one workstation and needs one employee. Use different workstation names for simultaneous coverage. Shifts start and end within the same day, with half-hour increments. Period restrictions and preferences apply to the shift's start time. The app opens with sample data.
 
-```
+The generator first considers shifts with the fewest eligible employees. It enforces role, availability, daily hours, weekly days, and time overlap. It ranks eligible employees by preferences and then by scheduled hours. The greedy algorithm can leave a shift open even if an alternative assignment would cover it. The timeline labels open shifts after generation.
+
+The app is a standalone implementation based on the components and types shared in discussion. Component styles are in `src/App.css` so it runs without additional styling configuration.
