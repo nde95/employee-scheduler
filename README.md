@@ -2,6 +2,9 @@
 
 A React and TypeScript app for planning one recurring workweek.
 
+Live version at: employee-scheduler-topaz.vercel.app
+
+To run locally:
 ```sh
 npm ci
 npm run dev
